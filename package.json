@@ -1,8 +1,8 @@
 {
   "name": "node-runner",
-  "displayName": "NodeJS Script Runner",
-  "description": "One click run javascript or typescript",
-  "version": "0.0.1",
+  "displayName": "Node.js Script Runner",
+  "description": "One click run javascript or typescript script with Node.js",
+  "version": "0.0.2",
   "publisher": "huanent",
   "icon": "logo.png",
   "repository": {
@@ -60,7 +60,7 @@
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
     "test": "vscode-test",
-    "publish": "vsce package & vsce publish"
+    "publish": "vsce publish"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
