@@ -5,6 +5,11 @@
   "version": "0.0.1",
   "publisher": "huanent",
   "icon": "logo.png",
+  "repository": {
+    "url": "https://github.com/huanent/vscode-node-runner.git",
+    "type": "github"
+  },
+  "homepage": "https://github.com/huanent/vscode-node-runner",
   "engines": {
     "vscode": "^1.100.0"
   },
