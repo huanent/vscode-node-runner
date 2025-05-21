@@ -2,9 +2,9 @@
   "name": "node-runner",
   "displayName": "Node.js Script Runner",
   "description": "One click run or debug Node.js script",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "publisher": "huanent",
-  "icon": "logo.png",
+  "icon": "resources/logo.png",
   "repository": {
     "url": "https://github.com/huanent/vscode-node-runner.git",
     "type": "github"
@@ -26,13 +26,15 @@
     "commands": [
       {
         "command": "node-runner.run-script",
-        "title": "Run Node.js Script",
-        "icon": "$(play)"
+        "title": "Run with Node.js",
+        "icon": "$(play)",
+        "category": "node-runner"
       },
       {
         "command": "node-runner.debug-script",
-        "title": "Debug Node.js Script",
-        "icon": "$(debug)"
+        "title": "Debug with Node.js",
+        "icon": "$(debug)",
+        "category": "node-runner"
       }
     ],
     "menus": {
