@@ -2,7 +2,7 @@
   "name": "node-runner",
   "displayName": "Node.js Script Runner",
   "description": "One click run javascript or typescript script with Node.js",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "huanent",
   "icon": "logo.png",
   "repository": {
@@ -27,12 +27,22 @@
         "command": "node-runner.run-script",
         "title": "Run Node.js Script",
         "icon": "$(play)"
+      },
+      {
+        "command": "node-runner.debug-script",
+        "title": "Debug Node.js Script",
+        "icon": "$(debug)"
       }
     ],
     "menus": {
       "explorer/context": [
         {
           "command": "node-runner.run-script",
+          "when": "resourceLangId == javascript || resourceLangId == typescript",
+          "group": "node-runner"
+        },
+        {
+          "command": "node-runner.debug-script",
           "when": "resourceLangId == javascript || resourceLangId == typescript",
           "group": "node-runner"
         }
@@ -42,14 +52,24 @@
           "when": "resourceLangId == javascript || resourceLangId == typescript",
           "command": "node-runner.run-script",
           "group": "navigation"
+        },
+        {
+          "when": "resourceScheme != untitled && (resourceLangId == javascript || resourceLangId == typescript)",
+          "command": "node-runner.debug-script",
+          "group": "navigation"
         }
       ]
     },
     "keybindings": [
       {
         "command": "node-runner.run-script",
-        "key": "alt+f5",
+        "key": "ctrl+n",
         "when": "resourceLangId == javascript || resourceLangId == typescript"
+      },
+      {
+        "command": "node-runner.debug-script",
+        "key": "ctrl+alt+n",
+        "when": "resourceScheme != untitled && (resourceLangId == javascript || resourceLangId == typescript)"
       }
     ]
   },
