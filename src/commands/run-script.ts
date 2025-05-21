@@ -1,29 +1,21 @@
 import * as vscode from 'vscode';
+import { getTypeSupportFlags, typescriptSupportCheck } from '../node-runtime';
+import { getCurrentDoc, getFilePath } from "../utils"
 
 const terminalName = 'node-runner';
 
 export function registerRunScriptCommand(context: vscode.ExtensionContext) {
     const disposable = vscode.commands.registerCommand('node-runner.run-script', async (uri: vscode.Uri) => {
-        let filePath;
+        let doc = await getCurrentDoc(uri);
 
-        if (uri?.path && uri.scheme !== "untitled") {
-            filePath = uri?.path;
-        }
-
-        if (!filePath && vscode.window.activeTextEditor) {
-            const document = vscode.window.activeTextEditor.document;
-            if (document.isUntitled) {
-                const tempUri = vscode.Uri.joinPath(context.storageUri!, 'temp.ts');
-                await vscode.workspace.fs.writeFile(tempUri, Buffer.from(document.getText()));
-                filePath = tempUri.path;
-            } else {
-                filePath = document.uri.path;
-            }
-        }
-
-        if (!filePath) {
-            vscode.window.showErrorMessage('No file selected to run.');
+        if (!doc) {
             return;
+        }
+
+        let filePath = await getFilePath(context, doc);
+
+        if (doc.languageId === "typescript") {
+            typescriptSupportCheck();
         }
 
         let terminal = vscode.window.terminals.find(f => f.name === terminalName);
@@ -34,7 +26,9 @@ export function registerRunScriptCommand(context: vscode.ExtensionContext) {
 
         terminal = vscode.window.createTerminal(terminalName);
         terminal.show();
-        terminal.sendText(`node --no-warnings --experimental-transform-types "${filePath}"`);
+        const typeSupportFlags = getTypeSupportFlags();
+        const command = ["node", ...typeSupportFlags, `"${filePath}"`];
+        terminal.sendText(command.join(' '));
     });
 
     context.subscriptions.push(disposable);

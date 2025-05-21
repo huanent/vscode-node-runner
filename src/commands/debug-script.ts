@@ -1,25 +1,19 @@
 import * as vscode from 'vscode';
+import { getCurrentDoc, getFilePath } from '../utils';
+import { getTypeSupportFlags, typescriptSupportCheck } from '../node-runtime';
 
 export function registerDebugScriptCommand(context: vscode.ExtensionContext) {
     const disposable = vscode.commands.registerCommand('node-runner.debug-script', async (uri: vscode.Uri) => {
-        let filePath;
+        let doc = await getCurrentDoc(uri);
 
-        if (uri?.path && uri.scheme !== "untitled") {
-            filePath = uri?.path;
-        }
-
-        if (!filePath && vscode.window.activeTextEditor) {
-            const document = vscode.window.activeTextEditor.document;
-            if (document.isUntitled) {
-                return;
-            } else {
-                filePath = document.uri.path;
-            }
-        }
-
-        if (!filePath) {
-            vscode.window.showErrorMessage('No file selected to run.');
+        if (!doc) {
             return;
+        }
+
+        let filePath = await getFilePath(context, doc);
+
+        if (doc.languageId === "typescript") {
+            typescriptSupportCheck();
         }
 
         const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
@@ -28,6 +22,8 @@ export function registerDebugScriptCommand(context: vscode.ExtensionContext) {
             vscode.window.showErrorMessage("No workspace folder open.");
             return;
         }
+
+        const typeSupportFlags = getTypeSupportFlags();
 
         const debugConfig: vscode.DebugConfiguration = {
             type: 'node', // for newer versions of VS Code
@@ -38,8 +34,7 @@ export function registerDebugScriptCommand(context: vscode.ExtensionContext) {
                 "<node_internals>/**"
             ],
             args: [
-                "--no-warnings",
-                "--experimental-transform-types",
+                ...typeSupportFlags,
                 filePath
             ]
         };
