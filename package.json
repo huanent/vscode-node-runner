@@ -1,14 +1,15 @@
 {
   "name": "node-runner",
   "displayName": "Node.js Script Runner",
-  "description": "One click run javascript or typescript script with Node.js",
-  "version": "0.0.3",
+  "description": "One click run or debug Node.js script",
+  "version": "0.0.4",
   "publisher": "huanent",
   "icon": "logo.png",
   "repository": {
     "url": "https://github.com/huanent/vscode-node-runner.git",
     "type": "github"
   },
+  "license": "MIT",
   "homepage": "https://github.com/huanent/vscode-node-runner",
   "engines": {
     "vscode": "^1.100.0"
